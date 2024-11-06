@@ -10,7 +10,7 @@ fn request_line_from_string_expect() {
         version: String::from("HTTP/1.1"),
     };
 
-    let result = RequestLine::from_string(request_line_string).unwrap();
+    let result = request_line_string.parse().unwrap();
 
     assert_eq!(expected, result);
 }
@@ -19,7 +19,7 @@ fn request_line_from_string_expect() {
 fn request_line_from_string_empty_expect_err() {
     let request_line_string = "";
 
-    let result = RequestLine::from_string(request_line_string);
+    let result: Result<RequestLine, _> = request_line_string.parse();
 
     assert!(result.is_err());
 }
@@ -28,7 +28,7 @@ fn request_line_from_string_empty_expect_err() {
 fn request_line_from_string_empty_method_expect_err() {
     let request_line_string = "/foo/bar HTTP/1.1";
 
-    let result = RequestLine::from_string(request_line_string);
+    let result: Result<RequestLine, _> = request_line_string.parse();
 
     assert!(result.is_err());
 }
@@ -37,7 +37,7 @@ fn request_line_from_string_empty_method_expect_err() {
 fn request_line_from_string_empty_target_expect_err() {
     let request_line_string = "GET HTTP/1.1";
 
-    let result = RequestLine::from_string(request_line_string);
+    let result: Result<RequestLine, _> = request_line_string.parse();
 
     assert!(result.is_err());
 }
@@ -46,7 +46,7 @@ fn request_line_from_string_empty_target_expect_err() {
 fn request_line_from_string_empty_version_expect_err() {
     let request_line_string = "GET /foo/bar";
 
-    let result = RequestLine::from_string(request_line_string);
+    let result: Result<RequestLine, _> = request_line_string.parse();
 
     assert!(result.is_err());
 }

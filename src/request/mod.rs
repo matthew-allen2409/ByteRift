@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use crate::header::Header;
 use crate::HttpMethod;
 
@@ -14,8 +15,10 @@ pub struct Request {
     pub body: Option<Vec<u8>>,
 }
 
-impl RequestLine {
-    pub fn from_string(str: &str) -> Result<Self, String> {
+impl FromStr for RequestLine {
+    type Err = String;
+
+    fn from_str(str: &str) -> Result<Self, String> {
         let mut parts = str.split_whitespace();
         let method = match parts.next() {
             Some(method) => method,

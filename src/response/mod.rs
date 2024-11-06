@@ -1,3 +1,4 @@
+use std::string::ToString;
 use crate::header::Header;
 
 #[derive(Debug, PartialEq)]
@@ -21,8 +22,10 @@ impl StatusLine {
             status_text,
         }
     }
+}
 
-    pub fn to_string(&self) -> String {
+impl ToString for StatusLine {
+    fn to_string(&self) -> String {
         format!(
             "{} {} {}\r\n",
             self.version, self.status_code, self.status_text,
