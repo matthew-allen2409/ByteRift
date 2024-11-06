@@ -1,5 +1,6 @@
 pub mod header;
 pub mod request;
+pub mod response;
 
 #[derive(PartialEq, Debug)]
 pub enum HttpMethod {
