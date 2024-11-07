@@ -1,9 +1,6 @@
-use crate::request::Request;
-use crate::response::Response;
+use super::Handler;
 use crate::HttpMethod;
 use std::collections::{HashMap, VecDeque};
-
-pub(crate) type Handler<T> = fn(Vec<String>, &Request, &T) -> Response;
 
 #[derive(Debug, PartialEq)]
 pub(super) struct PathNode<T> {
@@ -43,19 +40,20 @@ impl<T> PathNode<T> {
 
     pub(super) fn find(
         &self,
-        method: HttpMethod,
+        method: &HttpMethod,
         mut path: VecDeque<String>,
-    ) -> Option<&Handler<T>> {
+    ) -> (Option<&Handler<T>>, Vec<String>) {
+        let args: Vec<String> = vec![];
         let path_element = match path.pop_front() {
             Some(element) => element,
             None => {
-                return self.handlers.get(&method);
+                return (self.handlers.get(&method), args);
             }
         };
 
         match self.children.get(&path_element) {
             Some(child) => return child.find(method, path),
-            None => return None,
+            None => return (None, args),
         }
     }
 }

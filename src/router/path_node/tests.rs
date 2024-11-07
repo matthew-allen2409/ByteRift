@@ -135,3 +135,29 @@ fn path_node_add_route_mid() {
 
     assert_eq!(expected, result);
 }
+
+#[test]
+fn path_node_find_expect() {
+    let mut tree: PathNode<String> = PathNode::new();
+    tree.add_route(HttpMethod::GET, vec!["foo".into(), "bar".into()].into(), handler);
+
+    let expected: (Option<Handler<String>>, Vec<String>) = (Some(handler), vec![]);
+
+    let result = tree.find(&HttpMethod::GET, vec!["foo".into(), "bar".into()].into());
+
+    assert!(result.0.is_some());
+    assert_eq!(expected.1, result.1);
+}
+
+#[test]
+fn path_node_find_expect_none() {
+    let mut tree: PathNode<String> = PathNode::new();
+    tree.add_route(HttpMethod::GET, vec!["foo".into(), "bar".into()].into(), handler);
+
+    let expected: (Option<Handler<String>>, Vec<String>) = (None, vec![]);
+
+    let result = tree.find(&HttpMethod::GET, vec!["foo".into(), "bars".into()].into());
+
+    assert!(result.0.is_none());
+    assert_eq!(expected.1, result.1);
+}
