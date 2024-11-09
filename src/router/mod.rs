@@ -21,7 +21,7 @@ impl<T> Router<T> {
 
     pub fn handle_route(&self, request: Request) -> Response {
         let path = parse_path(&request.request_line.target);
-        let (handler, args) = self.route_tree.find(&request.request_line.method, path);
+        let (handler, args) = self.route_tree.handle(&request.request_line.method, path);
         match handler {
             Some(handler) => handler(args, &request, &self.state),
             None => Response {

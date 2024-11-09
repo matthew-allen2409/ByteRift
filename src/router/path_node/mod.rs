@@ -38,22 +38,30 @@ impl<T> PathNode<T> {
         child.add_route(method, path, handler);
     }
 
-    pub(super) fn find(
+    pub(super) fn handle(
         &self,
         method: &HttpMethod,
-        mut path: VecDeque<String>,
+        path: VecDeque<String>,
     ) -> (Option<&Handler<T>>, Vec<String>) {
         let args: Vec<String> = vec![];
+        self.find(method, path, args)
+    }
+
+    fn find(&self, method: &HttpMethod, mut path: VecDeque<String>, mut args: Vec<String>) -> (Option<&Handler<T>>, Vec<String>) {
         let path_element = match path.pop_front() {
             Some(element) => element,
-            None => {
-                return (self.handlers.get(&method), args);
-            }
+            None => return (self.handlers.get(&method), args),
         };
 
         match self.children.get(&path_element) {
-            Some(child) => return child.find(method, path),
-            None => return (None, args),
+            Some(child) => return child.find(method, path, args),
+            None => {
+                if self.children.keys().find(|key| (*key).eq("*")).is_some() {
+                    args.push(path_element);
+                    return self.children.get("*").unwrap().find(method, path, args);
+                }
+                return (None, args)
+            },
         }
     }
 }
