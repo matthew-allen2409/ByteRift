@@ -4,5 +4,6 @@ version = "0.1.0"
 authors = ["Matthew Allen <matthew.allen@matthewsbrain.com>"]
 edition = "2021"
 license = "MIT"
+description = "Simple http framework"
 
 [dependencies]
