@@ -1,6 +1,7 @@
 use crate::HttpMethod;
 use crate::request::Request;
 use crate::response::{ Response, StatusLine };
+use path_node::PathNode;
 use std::collections::VecDeque;
 
 pub(crate) type Handler<T> = fn(Vec<String>, &Request, &T) -> Response;
@@ -8,11 +9,18 @@ pub(crate) type Handler<T> = fn(Vec<String>, &Request, &T) -> Response;
 pub(crate) mod path_node;
 
 pub struct Router<T> {
-    route_tree: path_node::PathNode<T>,
+    route_tree: PathNode<T>,
     state: T,
 }
 
 impl<T> Router<T> {
+    pub fn new(state: T) -> Self {
+        Self {
+            route_tree: PathNode::new(),
+            state,
+        }
+    }
+
     pub fn add_route(&mut self, method: HttpMethod, path: &str, handler: Handler<T>) {
         let path: VecDeque<String> = parse_path(path);
 
