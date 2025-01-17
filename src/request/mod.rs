@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use crate::header::Header;
+use std::collections::HashMap;
 use crate::HttpMethod;
 
 #[derive(Debug, PartialEq)]
@@ -11,7 +11,7 @@ pub struct RequestLine {
 
 pub struct Request {
     pub request_line: RequestLine,
-    pub headers: Vec<Header>,
+    pub headers: HashMap<String, String>,
     pub body: Option<Vec<u8>>,
 }
 

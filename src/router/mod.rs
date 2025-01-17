@@ -34,7 +34,7 @@ impl<T> Router<T> {
             Some(handler) => handler(args, &request, &self.state),
             None => Response {
                 status_line: StatusLine::new(404, "Not Found".to_string()),
-                headers: vec![],
+                headers: Vec::new(),
                 body: None,
             }
         }
@@ -49,7 +49,6 @@ fn parse_path(path: &str) -> VecDeque<String> {
         .map(String::from)
         .collect()
 }
-
 
 #[cfg(test)]
 mod tests;

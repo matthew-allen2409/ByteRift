@@ -2,6 +2,7 @@ pub mod header;
 pub mod request;
 pub mod response;
 pub mod router;
+pub mod handler;
 
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub enum HttpMethod {

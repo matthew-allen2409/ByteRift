@@ -1,5 +1,5 @@
-use std::string::ToString;
 use crate::header::Header;
+use std::string::ToString;
 
 #[derive(Debug, PartialEq)]
 pub struct StatusLine {
@@ -22,6 +22,10 @@ impl StatusLine {
             status_text,
         }
     }
+
+    pub fn into_bytes(&self) -> Vec<u8> {
+        self.to_string().into_bytes()
+    }
 }
 
 impl ToString for StatusLine {
@@ -30,6 +34,15 @@ impl ToString for StatusLine {
             "{} {} {}\r\n",
             self.version, self.status_code, self.status_text,
         )
+    }
+}
+
+impl Response {
+    pub fn into_bytes(&self) -> Vec<u8> {
+        let mut bytes: Vec<u8> = Vec::new();
+        bytes.append(&mut self.status_line.into_bytes());
+
+        bytes
     }
 }
 

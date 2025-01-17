@@ -12,7 +12,7 @@ fn handler<String>(
     let status_line = StatusLine::new(200, "OK".to_string());
     Response {
         status_line,
-        headers: vec![],
+        headers: Vec::new(),
         body: None,
     }
 }
@@ -25,7 +25,7 @@ fn handler_two<String>(
     let status_line = StatusLine::new(200, "OK".to_string());
     Response {
         status_line,
-        headers: vec![],
+        headers: Vec::new(),
         body: None,
     }
 }
